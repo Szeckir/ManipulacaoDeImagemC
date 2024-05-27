@@ -19,7 +19,7 @@ void converterParaCinza(RGB **matriz, int linha, int coluna, int valor) {
         }
     }
 
-    FILE* fp_novo = fopen("Cinza.ppm", "w");
+    FILE* fp_novo = fopen("./imgs_transformadas/Cinza.ppm", "w");
     if (fp_novo == NULL) {
         printf("Erro ao criar o arquivo.\n");
         exit(1);
@@ -39,6 +39,8 @@ void converterParaCinza(RGB **matriz, int linha, int coluna, int valor) {
         }
         fprintf(fp_novo, "\n");
     }
+
+    fclose(fp_novo);
 }
 
 void converterTonsCinzaESaturado(RGB **matriz, int linha, int coluna, int valor) {
@@ -78,7 +80,7 @@ void converterTonsCinzaESaturado(RGB **matriz, int linha, int coluna, int valor)
         }
     }
 
-    FILE* fp_novo = fopen("cinzaComSaturado.ppm", "w");
+    FILE* fp_novo = fopen("./imgs_transformadas/cinzaComSaturado.ppm", "w");
     if (fp_novo == NULL) {
         printf("Erro ao criar o arquivo.\n");
         exit(1);
@@ -98,6 +100,8 @@ void converterTonsCinzaESaturado(RGB **matriz, int linha, int coluna, int valor)
         }
         fprintf(fp_novo, "\n");
     }
+
+    fclose(fp_novo);
 }
 
 void converterImagemNegativa(RGB **matriz, int linha, int coluna, int valor) {
@@ -121,7 +125,7 @@ void converterImagemNegativa(RGB **matriz, int linha, int coluna, int valor) {
         }
     }
 
-    FILE* fp_novo = fopen("imagemNegativa.ppm", "w");
+    FILE* fp_novo = fopen("./imgs_transformadas/imagemNegativa.ppm", "w");
     if (fp_novo == NULL) {
         printf("Erro ao criar o arquivo.\n");
         exit(1);
@@ -141,23 +145,25 @@ void converterImagemNegativa(RGB **matriz, int linha, int coluna, int valor) {
         }
         fprintf(fp_novo, "\n");
     }
+
+    fclose(fp_novo);
 }
 
 void converterImagemEnvelhecida(RGB **matriz, int linha, int coluna, int valor) {
     for (int i = 0; i < linha; i++) {
         for (int j = 0; j < coluna; j++) {
-            int r = matriz[i][j].R - 20;
-            int g = matriz[i][j].G - 20;
-            int b = matriz[i][j].B - 20;
 
-            matriz[i][j].R = r;
-            matriz[i][j].G = g;
-            matriz[i][j].B= b;
-            
+            int r = (int)matriz[i][j].R * 0.63;
+            int g = (int)matriz[i][j].G * 0.38;
+            int b = (int)matriz[i][j].B;
+
+            matriz[i][j].R = r + 40;
+            matriz[i][j].G = g + 40;
+            matriz[i][j].B = 0;
         }
     }
 
-    FILE* fp_novo = fopen("imagemEnvelhecida.ppm", "w");
+    FILE* fp_novo = fopen("./imgs_transformadas/imagemEnvelhecida.ppm", "w");
     if (fp_novo == NULL) {
         printf("Erro ao criar o arquivo.\n");
         exit(1);
@@ -177,6 +183,8 @@ void converterImagemEnvelhecida(RGB **matriz, int linha, int coluna, int valor) 
         }
         fprintf(fp_novo, "\n");
     }
+
+    fclose(fp_novo);
 }
 
 void aumentarBrilhoImagem(RGB **matriz, int linha, int coluna, int valor, int aumento) {
@@ -218,7 +226,7 @@ void aumentarBrilhoImagem(RGB **matriz, int linha, int coluna, int valor, int au
         }
     }
 
-    FILE* fp_novo = fopen("aumentoBrilho.ppm", "w");
+    FILE* fp_novo = fopen("./imgs_transformadas/aumentoBrilho.ppm", "w");
     if (fp_novo == NULL) {
         printf("Erro ao criar o arquivo.\n");
         exit(1);
@@ -238,6 +246,8 @@ void aumentarBrilhoImagem(RGB **matriz, int linha, int coluna, int valor, int au
         }
         fprintf(fp_novo, "\n");
     }
+
+    fclose(fp_novo);
 }
 
 void diminuirBrilhoImagem(RGB **matriz, int linha, int coluna, int valor, int diminuir) {
@@ -247,7 +257,7 @@ void diminuirBrilhoImagem(RGB **matriz, int linha, int coluna, int valor, int di
 
             matriz[i][j].R = cinza;
             matriz[i][j].G = cinza;
-            matriz[i][j].B= cinza;
+            matriz[i][j].B = cinza;
         }
     }
 
@@ -279,7 +289,7 @@ void diminuirBrilhoImagem(RGB **matriz, int linha, int coluna, int valor, int di
         }
     }
 
-    FILE* fp_novo = fopen("diminuiBrilho.ppm", "w");
+    FILE* fp_novo = fopen("./imgs_transformadas/diminuiBrilho.ppm", "w");
     if (fp_novo == NULL) {
         printf("Erro ao criar o arquivo.\n");
         exit(1);
@@ -299,6 +309,8 @@ void diminuirBrilhoImagem(RGB **matriz, int linha, int coluna, int valor, int di
         }
         fprintf(fp_novo, "\n");
     }
+
+    fclose(fp_novo);
 }
 
 void rotacionarImagem(RGB **matriz, int linha, int coluna, int valor) {
@@ -314,7 +326,7 @@ void rotacionarImagem(RGB **matriz, int linha, int coluna, int valor) {
         }
     }
 
-    FILE* fp_novo = fopen("rotacionarImagem.ppm", "w");
+    FILE* fp_novo = fopen("./imgs_transformadas/rotacionarImagem.ppm", "w");
     if (fp_novo == NULL) {
         printf("Erro ao criar o arquivo.\n");
         exit(1);
@@ -334,16 +346,30 @@ void rotacionarImagem(RGB **matriz, int linha, int coluna, int valor) {
         }
         fprintf(fp_novo, "\n");
     }
+
+    fclose(fp_novo);
 }
+
 
 int main() {
     FILE *fp;
-  	fp = fopen("samuca.ppm","r");
+    char nomeArquivo[100];
+
+    while(1) {
+        printf("Digite o nome do arquivo .ppm (com a extensão): ");
+        scanf("%s", nomeArquivo);
+
+  	    fp = fopen(nomeArquivo,"r");
+        if (fp == NULL) {
+                printf("Erro ao abrir o arquivo. Tente novamente.\n");
+            } else {
+            break;
+        }
+    }
 
     char formato[3];
   	fscanf(fp, "%s", formato); 
 
-    
   	printf("FORMATO: %s\n", formato);
 
     int coluna, linha;
@@ -369,19 +395,62 @@ int main() {
 		}
 	}
 
-       
-    //converterParaCinza(matriz, linha, coluna, valor);
-    //converterTonsCinzaESaturado(matriz, linha, coluna, valor);
-    //converterImagemNegativa(matriz, linha, coluna, valor);
-    converterImagemEnvelhecida(matriz, linha, coluna, valor);
-    //aumentarBrilhoImagem(matriz, linha, coluna, valor, 70);
-    //diminuirBrilhoImagem(matriz, linha, coluna, valor, 100);
-    //rotacionarImagem(matriz, linha, coluna, valor);
+    int opcao, brilho;
+
+    do {
+        printf("\nMenu:\n");
+        printf("1. Converter para Cinza\n");
+        printf("2. Converter para Tons de Cinza e Saturado\n");
+        printf("3. Converter para Imagem Negativa\n");
+        printf("4. Converter para Imagem Envelhecida\n");
+        printf("5. Aumentar Brilho da Imagem\n");
+        printf("6. Diminuir Brilho da Imagem\n");
+        printf("7. Rotacionar Imagem\n");
+        printf("8. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                converterParaCinza(matriz, linha, coluna, valor); 
+
+                break; 
+            case 2:
+                converterTonsCinzaESaturado(matriz, linha, coluna, valor);
+                break;
+            case 3:
+                converterImagemNegativa(matriz, linha, coluna, valor);
+                break;
+            case 4:
+                converterImagemEnvelhecida(matriz, linha, coluna, valor);
+                break;
+            case 5:
+                printf("Digite o valor de aumento de brilho: ");
+                scanf("%d", &brilho);
+                aumentarBrilhoImagem(matriz, linha, coluna, valor, brilho);
+                break;
+            case 6:
+                printf("Digite o valor de diminuição de brilho: ");
+                scanf("%d", &brilho);
+                diminuirBrilhoImagem(matriz, linha, coluna, valor, brilho);
+                break;
+            case 7:
+                rotacionarImagem(matriz, linha, coluna, valor);
+                break;
+            case 8:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (opcao != 8);
+
+    for (int i = 0; i < linha; i++) {
+        free(matriz[i]);
+    }
+    free(matriz);
 
     fclose(fp);
  	return 0;
-
+    
 }
-
-
-
