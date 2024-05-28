@@ -120,8 +120,6 @@ void converterImagemNegativa(RGB **matriz, int linha, int coluna, int valor) {
             matriz[i][j].R = 255 - (int)matriz[i][j].R;
             matriz[i][j].G = 255 - (int)matriz[i][j].G;
             matriz[i][j].B = 255 -(int)matriz[i][j].B;
-
-            
         }
     }
 
@@ -350,10 +348,11 @@ void rotacionarImagem(RGB **matriz, int linha, int coluna, int valor) {
     fclose(fp_novo);
 }
 
-
 int main() {
     FILE *fp;
     char nomeArquivo[100];
+    char formato[3];
+    int coluna, linha;
 
     while(1) {
         printf("Digite o nome do arquivo .ppm (com a extensão): ");
@@ -362,19 +361,18 @@ int main() {
   	    fp = fopen(nomeArquivo,"r");
         if (fp == NULL) {
                 printf("Erro ao abrir o arquivo. Tente novamente.\n");
-            } else {
-            break;
+            } 
+  	    fscanf(fp, "%s", formato); 
+    
+	    fscanf(fp, "%d %d", &coluna, &linha); 	// lê o tamanho da matriz  
+    
+        if(linha < 400 || coluna < 400) {
+           printf("Número mínimo de linhas ou colunas inválido.\n");
+        } else {
+          break;
         }
     }
-
-    char formato[3];
-  	fscanf(fp, "%s", formato); 
-
-  	printf("FORMATO: %s\n", formato);
-
-    int coluna, linha;
-	fscanf(fp, "%d %d", &coluna, &linha); 	// lê o tamanho da matriz  
-  	printf("COLUNA E LINHA: %d %d\n", coluna, linha);
+    
 
     RGB **matriz = (RGB **)malloc(linha * sizeof(RGB *));
     for (int i = 0; i < linha; i++) {
@@ -383,7 +381,6 @@ int main() {
 
     int valor;
 	fscanf(fp, "%d", &valor); 	// lê o valor máximo. 
-  	printf("VALOR MAXIMO: %d\n", valor);
 
     int i, j;
 
@@ -413,7 +410,6 @@ int main() {
         switch (opcao) {
             case 1:
                 converterParaCinza(matriz, linha, coluna, valor); 
-
                 break; 
             case 2:
                 converterTonsCinzaESaturado(matriz, linha, coluna, valor);
